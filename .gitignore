@@ -1,0 +1,14 @@
+.vs/
+
+/Builds/
+
+/vs aubio test/
+
+/Danpung/Assets/StreamingAssets/Old Models/
+/Danpung/Assets/StreamingAssets/Old Models.meta
+
+/Danpung/Assets/StreamingAssets/Music/*
+
+/Danpung/Assets/StreamingAssets/TSVs/NoBeatTypes/*
+
+/Danpung/Assets/StreamingAssets/TSVs/WithBeatTypes/*

@@ -172,37 +172,37 @@ public class MLHandler : MonoBehaviour
 
     private static IEstimator<ITransformer> processAndTrainIsSomethingTest(string dataFilePath, bool isCheckingForBeats)
     {
-        //context = new MLContext(seed: 0);
+        context = new MLContext(seed: 0);
 
-        //trainingData = context.Data.LoadFromTextFile<IsSomethingSample>(dataFilePath + "*.tsv");
-        //DataOperationsCatalog.TrainTestData splitDataView = context.Data.TrainTestSplit(trainingData, testFraction: 0.2);
+        trainingData = context.Data.LoadFromTextFile<IsSomethingSample>(dataFilePath + "*.tsv");
+        DataOperationsCatalog.TrainTestData splitDataView = context.Data.TrainTestSplit(trainingData, testFraction: 0.2);
 
-        //var kmeans = context.Transforms.Concatenate("Features", "Beat Samples")
-        //    //.Append(context.Transforms.NormalizeMinMax("Features"))
-        //    //.Append(context.BinaryClassification.Trainers.SdcaLogisticRegression("Label", "Beat Samples"));
-        //    .Append(context.BinaryClassification.Trainers.LbfgsLogisticRegression("Label", "Beat Samples"));
-        ////context.Transforms.Conversion.MapValueToKey("Beat Type")
-        ////.Append(context.Transforms.NormalizeMinMax("Features"))
-        ////.Append(context.Transforms.Concatenate("Features", "Features"))
-        ////.Append(context.Transforms.NormalizeLpNorm("Features"))
-        ////.Append(context.MulticlassClassification.Trainers.SdcaMaximumEntropy("Beat Type", "Beat Samples"))
-        ////.Append(context.Transforms.Conversion.MapKeyToValue("Beat Type"));
-        //Debug.Log("started fitting");
-        //if (isCheckingForBeats)
-        //    isBeatModel = kmeans.Fit(splitDataView.TrainSet);
-        //else
-        //    isBassModel = kmeans.Fit(splitDataView.TrainSet);
-        //Debug.Log("finished fitting");
+        var kmeans = context.Transforms.Concatenate("Features", "Beat Samples")
+            //.Append(context.Transforms.NormalizeMinMax("Features"))
+            //.Append(context.BinaryClassification.Trainers.SdcaLogisticRegression("Label", "Beat Samples"));
+            .Append(context.BinaryClassification.Trainers.LbfgsLogisticRegression("Label", "Beat Samples"));
+        //context.Transforms.Conversion.MapValueToKey("Beat Type")
+        //.Append(context.Transforms.NormalizeMinMax("Features"))
+        //.Append(context.Transforms.Concatenate("Features", "Features"))
+        //.Append(context.Transforms.NormalizeLpNorm("Features"))
+        //.Append(context.MulticlassClassification.Trainers.SdcaMaximumEntropy("Beat Type", "Beat Samples"))
+        //.Append(context.Transforms.Conversion.MapKeyToValue("Beat Type"));
+        Debug.Log("started fitting");
+        if (isCheckingForBeats)
+            isBeatModel = kmeans.Fit(splitDataView.TrainSet);
+        else
+            isBassModel = kmeans.Fit(splitDataView.TrainSet);
+        Debug.Log("finished fitting");
 
-        ////evaluation here
-        //Debug.Log("testing accuracy");
+        //evaluation here
+        Debug.Log("testing accuracy");
 
-        //IDataView predictions = (isCheckingForBeats ? isBeatModel : isBassModel).Transform(splitDataView.TestSet);
-        //CalibratedBinaryClassificationMetrics metrics = context.BinaryClassification.Evaluate(predictions, "Label");
-        //Debug.Log($"Model testing accuracy:\nAccuracy: {metrics.Accuracy:P2}\nAuc: {metrics.AreaUnderRocCurve:P2}\nF1Score: {metrics.F1Score:P2}");
+        IDataView predictions = (isCheckingForBeats ? isBeatModel : isBassModel).Transform(splitDataView.TestSet);
+        CalibratedBinaryClassificationMetrics metrics = context.BinaryClassification.Evaluate(predictions, "Label");
+        Debug.Log($"Model testing accuracy:\nAccuracy: {metrics.Accuracy:P2}\nAuc: {metrics.AreaUnderRocCurve:P2}\nF1Score: {metrics.F1Score:P2}");
 
-        //return kmeans;
-        return null; // ----------------------- doing this cuz idk if unity will lat me build
+        return kmeans;
+        //return null; // ----------------------- doing this cuz idk if unity will lat me build
     }
 
     private static void SaveModelAsFile(string filepath, ITransformer model)
